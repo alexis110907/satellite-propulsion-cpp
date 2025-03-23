@@ -32,7 +32,7 @@ void fire_propulsion_manager() {
                 {
                     Commands.pop();
                 }
-                std::cout << "Time changed to: " << fire_time_sec << std::endl;
+                //std::cout << "Time changed to: " << fire_time_sec << std::endl; // Used for debuggin purposes
                 updated_fire_time = false;
                 fired_propulsion = false;
                 lock.unlock();
@@ -52,8 +52,8 @@ void fire_propulsion_manager() {
             continue;
         }
 
+        //std::cout << "Fire Time: " << fire_time_sec << std::endl; // Used for debugging purposes
         std::cout << "firing now!"<< std::endl;
-        std::cout << "Fire Time: " << fire_time_sec << std::endl;
         fired_propulsion = true;
         fire_time_sec = -1;
         
