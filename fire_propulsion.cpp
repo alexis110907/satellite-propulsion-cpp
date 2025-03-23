@@ -1,4 +1,3 @@
-#include <condition_variable>
 #include <chrono>
 #include <iostream>
 #include <mutex>
@@ -11,7 +10,6 @@ bool updated_fire_time = false;
 bool fired_propulsion = false;
 int fire_time_sec = -1;
 std::stack<int> Commands;
-std::stack<int> emptyStack;
 
 // Manager that is in charge of updating firing time as well as firing the propulsion
 void fire_propulsion_manager() {
@@ -40,7 +38,8 @@ void fire_propulsion_manager() {
         }
         
         // Sleep for 0.1 seconds until its time to fire propulsion
-        if (std::chrono::steady_clock::now() - start_time < std::chrono::seconds(fire_time_sec))
+        auto duration = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - start_time);
+        if (duration < std::chrono::seconds(fire_time_sec))
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
             continue;
@@ -69,6 +68,7 @@ int main() {
     std::thread manager_thread(fire_propulsion_manager);
 
     int input;
+    std::stack<int> emptyStack;
     while (std::cin >> input) {
         // Lock mutex to update Commands stack and update_fire_time to prevent race condition
         std::lock_guard<std::mutex> lock(mtx);
