@@ -7,4 +7,4 @@ Use following command on a bash terminal to compile program:
 Use the following command to run program:
     ./fire_propulsion
 
-The reason I chose to use C++ as the programming language for this program was because of the similarity it has to Rust, which is the programming language that the Flight Software team codes in at Umbra. It helped as well that C++ is the programming language that I currently use ay my job and that I feel the most comfortable programming in for Embedded Systems software.
+The reason I chose to use C++ as the programming language for this program was because it's the programming language I feel the most comfortable programming in for Embedded Systems software. It also has a similarity to Rust, which is the programming language that the Flight Software team uses at Umbra.
