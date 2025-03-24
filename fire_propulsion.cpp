@@ -9,7 +9,7 @@ std::mutex mtx;
 bool updated_fire_time = false;
 bool fired_propulsion = false;
 int fire_time_sec = -1;
-std::stack<int> Commands;
+std::stack<int> commands;
 
 // Manager that is in charge of updating firing time as well as firing the propulsion
 void fire_propulsion_manager() {
@@ -18,17 +18,17 @@ void fire_propulsion_manager() {
         // If fire time has been updated or propulsion has been fired
         if (updated_fire_time || fired_propulsion)
         {
-            // Verify Commands stack is not empty
-            if(!Commands.empty())
+            // Verify commands stack is not empty
+            if(!commands.empty())
             {
                 // Set fire time to the top of the stack
                 std::unique_lock<std::mutex> lock(mtx);
-                fire_time_sec = Commands.top();
+                fire_time_sec = commands.top();
                 start_time = std::chrono::steady_clock::now();
                 // If fire time is -1, remove from stack
-                if (Commands.top() == -1)
+                if (commands.top() == -1)
                 {
-                    Commands.pop();
+                    commands.pop();
                 }
                 //std::cout << "Time changed to: " << fire_time_sec << std::endl; // Used for debuggin purposes
                 updated_fire_time = false;
@@ -58,7 +58,7 @@ void fire_propulsion_manager() {
         
         // Lock mutex to remove fire time from the top of stack
         std::unique_lock<std::mutex> lock(mtx);
-        Commands.pop();
+        commands.pop();
         lock.unlock();
     }
 }
@@ -74,10 +74,10 @@ int main() {
         std::lock_guard<std::mutex> lock(mtx);
         if (input == -1)
         {
-            Commands.swap(emptyStack);
+            commands.swap(emptyStack);
         }
         
-        Commands.push(input);
+        commands.push(input);
         updated_fire_time = true;
     }
 
